@@ -1,6 +1,7 @@
 package edu.auburn.eng.csse.comp3710.team14.jigsau;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,17 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
-       // if ()
-       // FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
+       switch(v.getId())
+       {
+           case R.id.start_button:
+               ImageSelectFragment imageSelectFragment = new ImageSelectFragment();
+               FragmentTransaction transaction
+                       = getActivity().getFragmentManager().beginTransaction();
+               transaction.replace(R.id.fragment_menu, imageSelectFragment);
+               transaction.addToBackStack(null);
+
+               transaction.commit();
+               break;
+       }
     }
 }
