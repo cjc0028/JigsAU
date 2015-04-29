@@ -11,8 +11,6 @@ public class GameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View game_view = inflater.inflate(R.layout.fragment_game, container, false);
-
-        return game_view;
+        return inflater.inflate(R.layout.fragment_game, container, false);
     }
 }
