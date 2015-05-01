@@ -3,31 +3,42 @@ package edu.auburn.eng.csse.comp3710.team14.jigsau;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class ImageSelectFragment extends Fragment implements View.OnClickListener {
 
     final private int PICK_IMAGE = 0;
-    //ImageView image;
+    final private String GRID_SIZE = "gridSize";
+    final private String EXTRA_IMAGE = "image";
     String imagePath;
+    int sizeSelection;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        Bundle bundle = this.getArguments();
+        sizeSelection = bundle.getInt(GRID_SIZE);
+
         View image_view = inflater.inflate(R.layout.fragment_images, container, false);
 
+        ImageButton image1Btn = (ImageButton)image_view.findViewById(R.id.image1);
+        ImageButton image2Btn = (ImageButton)image_view.findViewById(R.id.image2);
+        ImageButton image3Btn = (ImageButton)image_view.findViewById(R.id.image3);
+        //TODO Add other button listeners
         Button galleryBtn = (Button)image_view.findViewById(R.id.gallery_button);
+        image1Btn.setOnClickListener(this);
+        image2Btn.setOnClickListener(this);
+        image3Btn.setOnClickListener(this);
         galleryBtn.setOnClickListener(this);
 
         return image_view;
@@ -36,9 +47,33 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
 
+        Intent intent;
+        int imageId;
+
         switch (v.getId()) {
+            case R.id.image1:
+                intent = new Intent(getActivity(), BoardActivity.class);
+                imageId = R.drawable.classic_puzzle;
+                intent.putExtra(EXTRA_IMAGE, imageId);
+                intent.putExtra(GRID_SIZE, sizeSelection);
+                startActivity(intent);
+                break;
+            case R.id.image2:
+                intent = new Intent(getActivity(), BoardActivity.class);
+                imageId = R.drawable.samford_hall;
+                intent.putExtra(EXTRA_IMAGE, imageId);
+                intent.putExtra(GRID_SIZE, sizeSelection);
+                startActivity(intent);
+                break;
+            case R.id.image3:
+                intent = new Intent(getActivity(), BoardActivity.class);
+                imageId = R.drawable.auburn_logo;
+                intent.putExtra(EXTRA_IMAGE, imageId);
+                intent.putExtra(GRID_SIZE, sizeSelection);
+                startActivity(intent);
+                break;
             case R.id.gallery_button:
-                Intent intent = new Intent();
+                intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
 
@@ -50,9 +85,6 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        //getActivity().setContentView(R.layout.fragment_game);
-        //image = (ImageView)getActivity().findViewById(R.id.image);
 
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == PICK_IMAGE) {
@@ -69,17 +101,11 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
                     e.printStackTrace();
                 }
 
-                GameFragment gameFragment = new GameFragment();
-                Bundle bundle = new Bundle();
-                FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
-                bundle.putString("imagePath", imagePath);
-                gameFragment.setArguments(bundle);
-                transaction.replace(R.id.fragment_container, gameFragment);
-                Log.i("transaction", "Fragment replaced");
-                transaction.addToBackStack(null);
-                Log.i("transaction", "Added to Backstack");
-                transaction.commit();
-                Log.i("transaction", "Fragment committed");
+                //TODO Run after picture selected
+                Intent intent = new Intent(getActivity(), BoardActivity.class);
+                intent.putExtra(EXTRA_IMAGE, imagePath);
+                intent.putExtra(GRID_SIZE, sizeSelection);
+                startActivity(intent);
             }
         }
     }

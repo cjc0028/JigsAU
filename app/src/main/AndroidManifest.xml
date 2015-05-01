@@ -27,6 +27,10 @@
             android:name=".MainActivity"
             android:label="JigsAU" >
         </activity>
+        <activity
+            android:name=".BoardActivity"
+            android:label="JigsAU">
+        </activity>
     </application>
 
 </manifest>

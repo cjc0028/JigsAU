@@ -1,13 +1,15 @@
 package edu.auburn.eng.csse.comp3710.team14.jigsau;
 
-import android.app.Activity;
+
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +24,8 @@ public class MainActivity extends Activity {
 
             MenuFragment menuFragment = new MenuFragment();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.add(R.id.fragment_container, menuFragment).commit();
+            transaction.add(R.id.fragment_container, menuFragment);
+            transaction.commit();
         }
     }
 
@@ -47,5 +50,16 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack();
+        }
+        else {
+            super.onBackPressed();
+        }
     }
 }
