@@ -35,8 +35,8 @@ public class Position {
         return sharesAxisWith(position) && (row > position.row);
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "[R: "+row+" C:"+column+"]";
-    }
+    }*/
 }

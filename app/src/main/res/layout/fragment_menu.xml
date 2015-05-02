@@ -28,13 +28,13 @@
         <!--style="@style/button_style"-->
 
     <Spinner
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/spinner"
-        android:layout_alignLeft="@+id/view"
-        android:layout_alignStart="@+id/view"
+        style="@style/spinnerStyleView"
+        android:spinnerMode="dialog"
         android:layout_centerInParent="true"
-        android:textAlignment="center" />
+        android:clickable="false" />
 
     <ImageButton
         android:layout_width="50dp"

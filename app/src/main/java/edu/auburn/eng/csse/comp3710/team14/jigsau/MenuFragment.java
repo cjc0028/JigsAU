@@ -29,8 +29,8 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         View menu_view = inflater.inflate(R.layout.fragment_menu, container, false);
         final Spinner boardSizeSpin = (Spinner)menu_view.findViewById(R.id.spinner);
         final ArrayAdapter<Integer> sizeAdapter;
-        sizeAdapter = new ArrayAdapter<Integer>(getActivity().getBaseContext(), android.R.layout.simple_spinner_item, gridSizes);
-        sizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sizeAdapter = new ArrayAdapter<>(getActivity().getBaseContext(), R.layout.spinner_textview, gridSizes);
+        sizeAdapter.setDropDownViewResource(R.layout.spinner_textview);
         boardSizeSpin.setAdapter(sizeAdapter);
         boardSizeSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

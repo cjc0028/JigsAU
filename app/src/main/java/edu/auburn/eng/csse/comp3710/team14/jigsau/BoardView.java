@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.util.AttributeSet;
 import android.util.Pair;
@@ -19,7 +20,9 @@ import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class BoardView extends RelativeLayout implements OnTouchListener {
@@ -28,12 +31,14 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
         X, Y
     }
 
+    public int numberOfMoves = 0;
     public int boardSize = 4;
     public String imagePath = null;
     public int imageId = 0;
     private MediaPlayer mediaPlayer = MediaPlayer.create(this.getContext().getApplicationContext(), R.raw.tileclick);
 
-
+    private Timer timer = new Timer();
+    private int time = 0;
     private int tileSize;
     private ArrayList<Tile> tiles;
     private Tile emptyTile, movedTile;
@@ -42,6 +47,8 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
     private PointF lastDragPoint;
     private ArrayList<Movement> currentMovement;
     private LinkedList<Integer> tileOrder;
+    private List<Bitmap> originalBitmapOrder;
+    private int score = 0;
 
     public BoardView(Context context, AttributeSet attrSet) {
         super(context, attrSet);
@@ -54,26 +61,23 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
             determineGameboardSizes();
             fillTiles();
             boardCreated = true;
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    //textView.setText(time+" seconds");
+                    time++;
+                }
+            }, 1000, 1000);
         }
     }
 
-    private void determineGameboardSizes() {
-        int viewWidth = findViewById(R.id.gameboard).getWidth();
-        int viewHeight = findViewById(R.id.gameboard).getHeight();
-
-        if (viewWidth > viewHeight) {
-            tileSize = viewHeight / boardSize;
+    private boolean checkMatch() {
+        if (originalBitmapOrder.equals(getCurrentBitmapOrder())) {
+            return true;
         }
-        else {
-            tileSize = viewWidth / boardSize;
-        }
-        int gameboardSize = tileSize * boardSize;
-
-        int gameboardTop = viewHeight / 2 - gameboardSize / 2;
-        int gameboardLeft = viewWidth / 2 - gameboardSize / 2;
-        gameboardRect = new RectF(gameboardLeft, gameboardTop,
-                gameboardLeft + gameboardSize, gameboardTop + gameboardSize);
+        return false;
     }
+
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -87,7 +91,7 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
             if (event.getActionMasked() ==  MotionEvent.ACTION_DOWN) {
                 movedTile = touchedTile;
                 currentMovement = getTilesBetweenEmptyTileAndTile(movedTile);
-                movedTile.numberOfMoves = 0;
+                //movedTile.numberOfMoves = 0;
             }
             else if (event.getActionMasked() == MotionEvent.ACTION_MOVE) {
                 if (lastDragPoint != null) {
@@ -113,24 +117,47 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
         }
     }
 
+    private void determineGameboardSizes() {
+        int viewWidth = findViewById(R.id.gameboard).getWidth();
+        int viewHeight = findViewById(R.id.gameboard).getHeight();
+
+        if (viewWidth > viewHeight) {
+            tileSize = viewHeight / boardSize;
+        }
+        else {
+            tileSize = viewWidth / boardSize;
+        }
+        int gameboardSize = tileSize * boardSize;
+
+        int gameboardTop = viewHeight / 2 - gameboardSize / 2;
+        int gameboardLeft = viewWidth / 2 - gameboardSize / 2;
+        gameboardRect = new RectF(gameboardLeft, gameboardTop,
+                gameboardLeft + gameboardSize, gameboardTop + gameboardSize);
+    }
 
     public void fillTiles() {
+
+        removeAllViews();
 
         Bitmap original;
         // load image to slicer
         if (imagePath != null) {
             original = BitmapFactory.decodeFile(imagePath);
-        }
-        else {
+        } else {
             original = BitmapFactory.decodeResource(getContext().getResources(), imageId);
         }
         ImageDivider imageDivider = new ImageDivider(original, boardSize, getContext());
+
+        originalBitmapOrder = imageDivider.getBitmap();
+
         // order slices
+
         if (tileOrder == null) {
             imageDivider.randomizeTiles();
         } else {
             imageDivider.setTileOrder(tileOrder);
         }
+
         // fill game board with slices
         tiles = new ArrayList<>();
         for (int row = 0; row < boardSize; row++) {
@@ -176,9 +203,9 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
             return true;
         }
 
-        if (currentMovement != null && currentMovement.size() > 0 && movedTile.numberOfMoves < 10) {
+        if (currentMovement != null && currentMovement.size() > 0 ) {
             Movement firstMotionDescriptor = currentMovement.get(0);
-
+//took out condition
             if (firstMotionDescriptor.axialDelta < tileSize / 20) {
                 return true;
             }
@@ -191,7 +218,7 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
         float dxEvent = event.getRawX() - lastDragPoint.x;
         float dyEvent = event.getRawY() - lastDragPoint.y;
         Tile tile;
-        movedTile.numberOfMoves++;
+        //movedTile.numberOfMoves++;
         for (Movement descriptor : currentMovement) {
             tile = descriptor.tile;
             Pair<Float, Float> xy = getXYFromEvent(tile, dxEvent, dyEvent, descriptor.direction);
@@ -273,6 +300,13 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
             });
             animator.start();
         }
+        numberOfMoves++;
+        //TODO Add win condition
+        /*if(checkMatch()) {
+            score = numberOfMoves*time;
+            Toast toast = Toast.makeText(getContext(), "You Win!", Toast.LENGTH_LONG);
+            toast.show();
+        }*/
     }
 
     private void animateTilesBackToOrigin() {
@@ -420,7 +454,9 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
         for (int rowI = 0; rowI < boardSize; rowI++) {
             for (int colI = 0; colI < boardSize; colI++) {
                 Tile tile = getTileAtPosition(new Position(rowI, colI));
-                tileLocations.add(tile.originalIndex);
+                if (!tile.isEmpty()) {
+                    tileLocations.add(tile.originalIndex);
+                }
             }
         }
         return tileLocations;
@@ -428,6 +464,21 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
 
     public void setTileOrder(LinkedList<Integer> tileLocations) {
         this.tileOrder = tileLocations;
+    }
+
+    public List<Bitmap> getCurrentBitmapOrder() {
+        List<Bitmap> currentBitmapOrder = new ArrayList<Bitmap>();
+        for (int rowI = 0; rowI < boardSize; rowI++) {
+            for (int colI = 0; colI < boardSize; colI++) {
+                Tile tile = getTileAtPosition(new Position(rowI, colI));
+                if (!tile.isEmpty()) {
+                    BitmapDrawable drawable = (BitmapDrawable) tile.getDrawable();
+                    Bitmap bitmap = drawable.getBitmap();
+                    currentBitmapOrder.add(bitmap);
+                }
+            }
+        }
+        return currentBitmapOrder;
     }
 
     public class Movement {

@@ -91,7 +91,7 @@ public class ImageDivider {
         if (tiles.size() > 0 ) {
             int originalIndex;
             if (tileOrder == null) {
-                originalIndex = lastTileServed;
+                originalIndex = lastTileServed++;
             }
             else {
                 originalIndex = tileOrder.get(lastTileServed++);
@@ -104,5 +104,9 @@ public class ImageDivider {
             tile.setImageBitmap(tiles.remove(0));
         }
         return tile;
+    }
+
+    public List<Bitmap> getBitmap() {
+        return tiles;
     }
 }
