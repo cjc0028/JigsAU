@@ -25,11 +25,13 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="JigsAU" >
+            android:label="JigsAU"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".BoardActivity"
-            android:label="JigsAU">
+            android:label="JigsAU"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

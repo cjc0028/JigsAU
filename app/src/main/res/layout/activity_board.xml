@@ -6,9 +6,43 @@
     android:layout_height="match_parent"
     android:background="@color/gray">
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:layout_weight="6">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:id="@+id/timer"
+            android:textSize="36dp"
+            android:gravity="left" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:id="@+id/move_count"
+            android:textSize="36dp"
+            android:gravity="right" />
+    </LinearLayout>
+
+
     <edu.auburn.eng.csse.comp3710.team14.jigsau.BoardView
         android:layout_width="fill_parent"
-        android:layout_height="630dp"
-        android:id="@+id/gameboard">
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:id="@+id/gameboard"
+        android:layout_gravity="center">
         </edu.auburn.eng.csse.comp3710.team14.jigsau.BoardView>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:text="Check Puzzle"
+        android:textSize="36dp"
+        android:id="@+id/check_puzzle" />
 </LinearLayout>

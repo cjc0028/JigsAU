@@ -9,14 +9,14 @@ import android.os.Handler;
 public class SplashScreen extends Activity {
     
     //Splash Screen Timer
-    private static int SPLASH_TIME_OUT = 12000;
+    private static int SPLASH_TIME_OUT = 5000;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        MediaPlayer mediaPlayer = MediaPlayer.create(getBaseContext(), R.raw.start_sound);
-        mediaPlayer.start();
+        mediaPlayer = MediaPlayer.create(getBaseContext(), R.raw.gameboy_start_up);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -25,6 +25,8 @@ public class SplashScreen extends Activity {
                 // Start your main app activity
                 Intent i = new Intent(SplashScreen.this, MainActivity.class);
                 startActivity(i);
+
+                mediaPlayer.start();
 
                 //close the activity
                 finish();

@@ -16,7 +16,10 @@ import android.widget.Spinner;
 
 public class MenuFragment extends Fragment implements View.OnClickListener {
     final static Integer[] gridSizes = {4,5,6,7,8};
+
     private boolean isMuted = false;
+    View menu_view;
+    Button volumeButton;
     AudioManager audioManager;
     ImageButton volumeBtn;
     int sizeSelection;
@@ -26,7 +29,14 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
 
         audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
 
-        View menu_view = inflater.inflate(R.layout.fragment_menu, container, false);
+        menu_view = inflater.inflate(R.layout.fragment_menu, container, false);
+
+        final Button gridSelectionBtn = (Button)menu_view.findViewById(R.id.size_selection);
+        gridSelectionBtn.setOnClickListener(this);
+
+        volumeButton = (Button)menu_view.findViewById(R.id.volume_button);
+        volumeButton.setOnClickListener(this);
+
         final Spinner boardSizeSpin = (Spinner)menu_view.findViewById(R.id.spinner);
         final ArrayAdapter<Integer> sizeAdapter;
         sizeAdapter = new ArrayAdapter<>(getActivity().getBaseContext(), R.layout.spinner_textview, gridSizes);
@@ -36,6 +46,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 sizeSelection = sizeAdapter.getItem(boardSizeSpin.getSelectedItemPosition());
+                gridSelectionBtn.setText("Select Board Size: " + sizeSelection);
             }
 
             @Override
@@ -47,8 +58,8 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         Button startBtn = (Button)menu_view.findViewById(R.id.start_button);
         startBtn.setOnClickListener(this);
 
-        volumeBtn = (ImageButton)menu_view.findViewById(R.id.volume_button);
-        volumeBtn.setOnClickListener(this);
+        //volumeBtn = (ImageButton)menu_view.findViewById(R.id.volume_button);
+        //volumeBtn.setOnClickListener(this);
         isMuted();
 
         return menu_view;
@@ -76,22 +87,33 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
            case R.id.volume_button:
                if (!isMuted) {
                    audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
-                   volumeBtn.setBackgroundResource(R.drawable.volume_mute);
+                   //volumeBtn.setBackgroundResource(R.drawable.volume_mute);
+                   volumeButton.setText("Sounds: Off");
                    isMuted = true;
                }
                else {
                    audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
-                   volumeBtn.setBackgroundResource(R.drawable.volume_on);
+                   //volumeBtn.setBackgroundResource(R.drawable.volume_on);
+                   volumeButton.setText("Sounds: On");
                    isMuted = false;
                }
+               break;
+           case R.id.size_selection:
+               getSpinner().performClick();
                break;
        }
     }
 
     public void isMuted() {
         if (audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) == 0) {
-            volumeBtn.setBackgroundResource(R.drawable.volume_mute);
+            //volumeBtn.setBackgroundResource(R.drawable.volume_mute);
+            volumeButton.setText("Sounds: Off");
             isMuted = true;
         }
     }
+
+    private Spinner getSpinner() {
+        return (Spinner)menu_view.findViewById(R.id.spinner);
+    }
+
 }

@@ -9,8 +9,8 @@ public class Tile extends ImageView {
 
     public Position position;
     public int originalIndex;
-    //public int numberOfMoves;
     private boolean isEmpty;
+    public int tag;
 
     public Tile(Context context, int originalIndex) {
         super(context);

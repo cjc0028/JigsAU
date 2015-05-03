@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +15,7 @@ public class ImageDivider {
 
     private Bitmap originalBitmap;
     private int tileSize, boardSize;
-    private List<Bitmap> tiles;
+    public List<Bitmap> tiles;
     private int lastTileServed;
     private List<Integer> tileOrder;
     private Context context;
@@ -36,8 +37,8 @@ public class ImageDivider {
         Bitmap bitmap;
         lastTileServed = 0;
 
-        for (int row = 0; row < boardSize; row++) {
-            for (int col = 0; col < boardSize; col++) {
+        for (int col = 0; col < boardSize; col++) {
+            for (int row = 0; row < boardSize; row++) {
                 // don't divide last part - empty tile
                 if (row == boardSize - 1 && col == boardSize - 1) {
                     continue;
@@ -51,7 +52,7 @@ public class ImageDivider {
                     // draw border lines
                     Canvas canvas = new Canvas(bitmap);
                     Paint paint = new Paint();
-                    paint.setColor(Color.parseColor("#fbfdff"));
+                    paint.setColor(Color.parseColor("#000000"));
                     int end = tileSize - 1;
                     canvas.drawLine(0, 0, 0, end, paint);
                     canvas.drawLine(0, end, end, end, paint);
@@ -107,6 +108,7 @@ public class ImageDivider {
     }
 
     public List<Bitmap> getBitmap() {
-        return tiles;
+        List<Bitmap> currentBitmaps = new ArrayList<Bitmap>(tiles);
+        return currentBitmaps;
     }
 }
