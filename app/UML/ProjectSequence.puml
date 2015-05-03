@@ -1,0 +1,54 @@
+@startuml
+title:  SD:  JigsAU LifeCycle
+activate MainActivity
+[-> MainActivity: onCreate
+create SplashScreen
+activate SplashScreen
+
+MainActivity -> SplashScreen: construct
+SplashScreen --> MainActivity
+deactivate SplashScreen
+create MenuFragment
+activate MenuFragment
+MainActivity -> MenuFragment: construct
+
+alt ToggleSound
+MenuFragment -> MenuFragment: ToggleSound
+activate MenuFragment
+deactivate MenuFragment
+end
+
+alt StartGame
+create ImageSelectFragment
+activate ImageSelectFragment
+MenuFragment -> ImageSelectFragment: construct
+MenuFragment --> MainActivity
+deactivate MenuFragment
+
+ImageSelectFragment -> ImageSelectFragment: Show ImageSelectFragment
+activate ImageSelectFragment
+deactivate ImageSelectFragment
+
+create BoardActivity
+ImageSelectFragment -> BoardActivity: construct
+activate BoardActivity
+ImageSelectFragment --> MainActivity
+deactivate ImageSelectFragment
+
+loop For all Tiles
+create Tile
+activate Tile
+BoardActivity -> Tile: construct
+Tile --> BoardActivity
+deactivate Tile
+BoardActivity -> Tile: SetLocation
+activate Tile
+Tile --> BoardActivity
+deactivate Tile
+end
+BoardActivity --> MainActivity
+
+
+end
+
+@enduml

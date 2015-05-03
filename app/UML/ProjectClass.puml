@@ -1,0 +1,191 @@
+@startuml
+title JigsAU Design Class Diagram
+class Activity << (A,orchid) >>
+class Fragment << (A,orchid) >>
+class View << (A,orchid) >>
+class Handler << (A,orchid) >>
+
+class MainActivity {
+onCreate()
+onCreateOptionMenu()
+onOptionsItemSelected()
+onBackPressed()
+}
+MainActivity -left-|> Activity
+
+class SplashScreen {
+SPLASH_TIME_OUT
+mediaPlayer
+
+onCreate()
+
+}
+
+MainActivity -- SplashScreen
+SplashScreen --|> Activity
+SplashScreen -|> Handler
+
+class MenuFragment {
+gridSizes[]
+isMuted
+menu_view
+audioManager
+volumeBtn
+sizeSelection
+
+onCreateView()
+onClick()
+isMuted()
+getSpinner()
+}
+
+MainActivity -- MenuFragment
+MenuFragment -|> Fragment
+MainActivity -- BoardActivity
+
+class BoardView {
+Direction
+boardSize
+imagePath
+imageId
+mediaPlayer
+tileSize
+tiles<>
+emptyTile
+movedTile
+boardCreated
+gameBoardRect
+lastDragPoint
+currentMovement<>
+tileOrder<>
+originalBitmaps<>
+observer
+checkPuzzle
+
+onLayout()
+checkMatch()
+getOriginalBitmaps()
+saveCurrentBitmaps()
+determineGameboardSizes()
+onTouch()
+fillTiles()
+placeTile()
+lastDragMovedAtLeastHalfway()
+isClicked()
+followFinger()
+getXYFromEvent()
+collidesWithTiles()
+animateTilesToEmptySpace()
+animateTilesBackToOrigin()
+getTilesBetweenEmptyTileAndOrigin()
+getTileAtPosition()
+allTilesInRow()
+allTilesInColumn()
+getCurrentBitmaps()
+setObserver
+rectForPosition()
+getTileOrder()
+setTileOrder()
+currentPosition()
+}
+interface Observer {
+callBack()
+}
+BoardView ..> Observer
+BoardView --|> View
+
+class BoardActivity {
+boardView
+timer
+numberOfMoves
+victory
+audioManager
+isMuted
+moves_view
+
+onCreate()
+inClick()
+onSaveInstanceState()
+onRestoreInstanceState()
+}
+BoardActivity -|> Activity
+BoardActivity -- ImageSelectFragment
+class ImageSelectFragment {
+PICK_IMAGE
+GRID_SIZE
+EXTRA_IMAGE
+imagePath
+sizeSelection
+
+onCreateView()
+onClick()
+onActivityResult()
+}
+ImageSelectFragment -left-|> Fragment
+
+class Tile {
+position
+originalIndex
+isEmpty
+
+isEmpty()
+setEmpty()
+isInRowOrColumnOf()
+isToRightOf()
+isToLeftOf()
+isAbove()
+isBelow()
+setXY()
+}
+
+class imageDivider {
+originalBitmap
+tileSize
+boardSize
+tiles<>
+lastTileServed
+tileOrder<>
+context
+
+divideImage()
+randomizeTiles()
+setTileOrder()
+getTile()
+getBitmap()
+}
+BoardActivity -- imageDivider
+
+class Position {
+row
+column
+
+matches()
+sharesAxisWith()
+isToRightOf()
+isToLeftOf()
+isAbove()
+isBelow()
+
+}
+
+class Movement {
+finalRect
+originalRect
+direction
+tile
+from
+to
+axialDelta
+finalPosition
+
+currentPosition()
+originalPosition()
+
+}
+
+
+Tile ..> Movement
+Tile ..> Position
+BoardActivity -- Tile
+BoardActivity ..> BoardView
+@enduml

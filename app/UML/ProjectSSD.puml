@@ -1,0 +1,25 @@
+@startuml
+title JigsAU SSD
+actor Player
+participant App
+
+Player -> App: start
+Player -> App: Choose Photo
+note right: UC:Choose Image
+par while !end of game
+note right:  UC: Play Game
+Player <-- App: Board
+Player <-- App: Tiles
+note right: UC: View Board
+Player <-- App: move Count
+Player <-- App: Time
+else
+
+opt play
+Player -> App: moveTile
+note right: UC: Move Tile
+end
+end
+Player <-- App: Score
+note right: UC: Show Score
+@enduml

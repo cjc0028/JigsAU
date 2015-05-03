@@ -1,0 +1,26 @@
+@startuml
+
+Title JigsAU Domain Model
+class Player {
+
+}
+
+class Board {
+Movements
+Timer
+}
+
+class Tile {
+Location
+}
+
+Player -- Tile: moves >
+Player -- Board: views >
+Board "1" *-- "16..*" Tile: contains >
+Board "1" *-- "1" Picture: uses >
+Picture "1" -- "16..*" Tile: consists of >
+hide empty members
+hide methods
+
+
+@enduml
