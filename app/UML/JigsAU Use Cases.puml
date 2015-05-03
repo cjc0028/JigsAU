@@ -1,0 +1,150 @@
+@startuml
+salt
+{
+{T
++ View Board
+++ Goal
++++ To show the tiles, timer, current number of moves, and image check option
+++ Entry conditions
++++ A game has been started
+++ Scenario
++++ The player is shown the game board, which consists of
+++++ image tiles
+++++ timer
+++++ image check option
++++ When the player makes the first move,
+++++ move counter is shown to the player
++++ The player completes the game
+++ Exceptions
++++ None
+++ Exit conditions
++++ Successful Exit Conditions
+++++ The game concludes
++++ Failure Exit Conditions
+++++ None
+}
+---
+{T
++ Toggle Sound
+++  Goal
++++ To toggle all the sounds in the game
+++ Entry conditions
++++ The player has chosen to toggle the current sound setting
+++ Scenario
++++ The sound is turned on or off depending on the current setting
+++ Exceptions
++++ None
+++ Exit conditions
++++ Successful Exit Conditions
+++++ The sound setting has changed
++++ Failure Exit Conditions
+++++ None
+}
+---
+{T
++ Play Game
+++  Goal
++++ To move the tiles to the correct position on the board
+++ Entry conditions
++++ An image has been cropped into tiles
+++ Scenario
++++ The player is shown the game board
++++ The game timer begins automatically
++++ When the first tile is moved,
+++++ The move counter is incremented by one
++++ The move counter is incremented by one for every subsequent tile move
++++ When the player chooses to check the image either
+++++ The game ends if the image is correctly reconstructed, or
+++++ The game continues otherwise
+++ Exceptions
++++ The game is terminated before the player wins by choosing to back out of the game screen
+++ Exit conditions
++++ Successful Exit Conditions
+++++ The puzzle is completed
+++++ The score is shown to the player
++++ Failure Exit Conditions
+++++ The puzzle is never completed
+}
+---
+{T
++ Move Tile
+++  Goal
++++ To move a tile on the board
+++ Entry conditions
++++ The player moves a tile on the board up, down, left, or right
+++ Scenario
++++ The selected tile moves into the adjacent empty space on the board
+++ Exceptions
++++ None
+++ Exit conditions
++++ Successful Exit Conditions
+++++ The selected tile moves in the directed direction of the empty space
++++ Failure Exit Conditions
+++++ None
+}
+---
+{T
++ View Main Menu
+++ Goal
++++ To show the game main menu
+++ Entry conditions
++++ The application is opened
+++ Scenario
++++ The player is shown the main menu, consisting of
+++++ start game option
+++++ select board size option
+++++ toggle sound option
++++ The player selects one of the options
+++ Exceptions
++++ None
+++ Exit conditions
++++ Successful Exit Conditions
+++++ The player selects the start game option
+++++ The application is closed
++++ Failure Exit Conditions
+++++ None
+}
+---
+{T
++ Choose Image
+++ Goal
++++ To choose an image so the game can begin
+++ Entry conditions
++++ The player has chosen to start a new game from the main menu
+++ Scenario
++++ The player is shown the image select menu, which consists of
+++++ three default image options
+++++ choose from gallery option
++++ The player chooses one of the default images
+++ Exceptions
++++ None
+++ Exit conditions
++++ Successful Exit Conditions
+++++ The player has chosen an image
++++ Failure Exit Conditions
+++++ None
+}
+---
+{T
++ View Score
+++ Goal
++++ To show the player the game score, number of moves, and time spent on puzzle
+++ Entry conditions
++++ The player has chosen to check the image once it has been correctly reconstructed
+++ Scenario
++++ The player is shown the following,
+++++ The resulting score from the game,
+++++ the number of moves it took to complete the puzzle,
+++++ the time it took to complete the puzzle,
+++++ and an option to return to the main menu
++++ The player chooses to return to the main menu
+++ Exceptions
++++ None
+++ Exit conditions
++++ Successful Exit Conditions
+++++ The player is shown the main menu
++++ Failure Exit Conditions
+++++ None
+}
+}
+@enduml

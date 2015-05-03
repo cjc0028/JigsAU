@@ -1,0 +1,20 @@
+@startuml
+title JigsAU Use Case Diagram
+
+actor Player
+
+rectangle  {
+usecase "view main menu" as UC2
+usecase "play game" as UC1
+
+Player -- UC2
+Player -- UC1
+
+UC2 ..> (toggle sound): <<includes>>
+UC2 ..> (choose image): <<includes>>
+
+UC1 ..> (view board): <<includes>>
+UC1 ..> (move tile): <<includes>>
+UC1 ..> (view score): <<includes>>
+}
+@enduml

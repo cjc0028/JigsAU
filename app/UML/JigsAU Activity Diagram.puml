@@ -1,0 +1,21 @@
+@startuml
+partition Activity {
+(*)--> SplashScreen
+}
+partition Activity2 {
+SplashScreen --> MainActivity
+partition Fragment {
+ImageSelect -right-> MenuFragment
+MenuFragment --> ImageSelect
+}
+}
+partition Activity3 {
+ImageSelect --> BoardActivity
+BoardActivity --> ImageSelect
+BoardActivity --> MenuFragment
+}
+BoardActivity ---> (*)
+
+
+
+@enduml
