@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -37,7 +38,6 @@ public class BoardActivity extends Activity implements View.OnClickListener{
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         isMuted = (audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) == 0);
         moves_view = (TextView) findViewById(R.id.move_count);
-        //moves_view.setText("Moves: " + numberOfMoves);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -70,8 +70,7 @@ public class BoardActivity extends Activity implements View.OnClickListener{
             @Override
             public void callBack() {
                 numberOfMoves++;
-                TextView moves = (TextView)findViewById(R.id.move_count);
-                moves.setText("Moves: " + numberOfMoves);
+                moves_view.setText("Moves: " + numberOfMoves);
             }
         });
 
@@ -110,7 +109,7 @@ public class BoardActivity extends Activity implements View.OnClickListener{
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle savedInstanceState) {
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putInt("time", time);
         savedInstanceState.putInt("moves", numberOfMoves);
@@ -122,7 +121,7 @@ public class BoardActivity extends Activity implements View.OnClickListener{
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
         boardView.boardSize = savedInstanceState.getInt("boardSize");
@@ -136,10 +135,5 @@ public class BoardActivity extends Activity implements View.OnClickListener{
         }
 
         boardView.setTileOrder(savedInstanceState.getIntegerArrayList("currentTileOrder"));
-    }
-
-    @SuppressWarnings({"deprecation", "unchecked"})
-    public Object onRetainNonConfigurationInstance() {
-        return this;
     }
 }

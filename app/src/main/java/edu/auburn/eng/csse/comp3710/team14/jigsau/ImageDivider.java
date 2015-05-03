@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class ImageDivider {
             for (int row = 0; row < boardSize; row++) {
                 // don't divide last part - empty tile
                 if (row == boardSize - 1 && col == boardSize - 1) {
-                    continue;
+
                 } else {
                     x = row * tileSize;
                     y = col * tileSize;
@@ -66,27 +65,6 @@ public class ImageDivider {
         originalBitmap = null;
     }
 
-    public void randomizeTiles() {
-        Collections.shuffle(tiles);
-        tiles.add(null);
-        tileOrder = null;
-    }
-
-    public void setTileOrder(List<Integer> order) {
-
-        List<Bitmap> newTiles = new LinkedList<Bitmap>();
-        for (int o : order) {
-            if (o < tiles.size()) {
-                newTiles.add(tiles.get(o));
-            }
-            else {
-                newTiles.add(null);
-            }
-        }
-        tileOrder = order;
-        tiles = newTiles;
-    }
-
     public Tile getTile() {
         Tile tile = null;
         if (tiles.size() > 0 ) {
@@ -108,7 +86,6 @@ public class ImageDivider {
     }
 
     public List<Bitmap> getBitmap() {
-        List<Bitmap> currentBitmaps = new ArrayList<Bitmap>(tiles);
-        return currentBitmaps;
+        return new ArrayList<Bitmap>(tiles);
     }
 }

@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 
 public class MenuFragment extends Fragment implements View.OnClickListener {
@@ -21,7 +20,6 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
     View menu_view;
     Button volumeButton;
     AudioManager audioManager;
-    ImageButton volumeBtn;
     int sizeSelection;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,8 +56,6 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         Button startBtn = (Button)menu_view.findViewById(R.id.start_button);
         startBtn.setOnClickListener(this);
 
-        //volumeBtn = (ImageButton)menu_view.findViewById(R.id.volume_button);
-        //volumeBtn.setOnClickListener(this);
         isMuted();
 
         return menu_view;
@@ -87,13 +83,11 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
            case R.id.volume_button:
                if (!isMuted) {
                    audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
-                   //volumeBtn.setBackgroundResource(R.drawable.volume_mute);
                    volumeButton.setText("Sounds: Off");
                    isMuted = true;
                }
                else {
                    audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
-                   //volumeBtn.setBackgroundResource(R.drawable.volume_on);
                    volumeButton.setText("Sounds: On");
                    isMuted = false;
                }
@@ -106,7 +100,6 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
 
     public void isMuted() {
         if (audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) == 0) {
-            //volumeBtn.setBackgroundResource(R.drawable.volume_mute);
             volumeButton.setText("Sounds: Off");
             isMuted = true;
         }

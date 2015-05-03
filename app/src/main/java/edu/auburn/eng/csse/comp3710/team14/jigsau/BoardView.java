@@ -16,7 +16,6 @@ import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
@@ -47,8 +46,6 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
     private ArrayList<Integer> tileOrder;
     private List<Bitmap> originalBitmaps;
     private Observer observer;
-    private Button checkPuzzle;
-    private int score = 0;
 
     public BoardView(Context context, AttributeSet attrSet) {
         super(context, attrSet);
@@ -72,14 +69,6 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
             }
         }
         return true;
-    }
-
-    public List<Bitmap> getOriginalBitmaps() {
-        return originalBitmaps;
-    }
-
-    public List<Bitmap> saveCurrentBitmaps() {
-        return getCurrentBitmaps();
     }
 
     @Override
@@ -167,15 +156,6 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
         originalBitmaps = imageDivider.getBitmap();
         originalBitmaps.add(null);
 
-
-        /*// order slices
-        if (tileOrder == null) {
-            imageDivider.randomizeTiles();
-        } else {
-            imageDivider.setTileOrder(tileOrder);
-        }*/
-
-        // fill game board with slices
         tiles = new ArrayList<Tile>();
         imageDivider.tiles.add(null);
 
@@ -189,7 +169,6 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
                     tile = imageDivider.getTile();
                     tile.tag = (row * boardSize) + col;
                 }
-                //tile.position = new Position(row, col);
                 if (tile.isEmpty()) {
                     emptyTile = tile;
                 }
@@ -197,7 +176,6 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
             }
         }
 
-        // order slices
         if (tileOrder == null) {
             randomizeTiles();
             for (int i = 0; i < tiles.size(); i++) {
@@ -206,7 +184,6 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
                 placeTile(tile);
             }
         } else {
-            //imageDivider.setTileOrder(tileOrder);
             for (int i = 0; i < tiles.size(); i++) {
                 Tile tile = tiles.get(tileOrder.get(i));
                 tile.position = new Position((i / boardSize), (i % boardSize));
@@ -248,7 +225,6 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
 
         if (currentMovement != null && currentMovement.size() > 0 ) {
             Movement firstMotionDescriptor = currentMovement.get(0);
-//took out condition
             if (firstMotionDescriptor.axialDelta < tileSize / 20) {
                 return true;
             }
@@ -261,7 +237,6 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
         float dxEvent = event.getRawX() - lastDragPoint.x;
         float dyEvent = event.getRawY() - lastDragPoint.y;
         Tile tile;
-        //movedTile.numberOfMoves++;
         for (Movement descriptor : currentMovement) {
             tile = descriptor.tile;
             Pair<Float, Float> xy = getXYFromEvent(tile, dxEvent, dyEvent, descriptor.direction);
@@ -506,17 +481,6 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
         this.tileOrder = tileLocations;
     }
 
-    /*public List<Integer> getCurrentBitmapOrder() {
-        LinkedList<Integer> tileLocations = new LinkedList<>();
-        for (int rowI = 0; rowI < boardSize; rowI++) {
-            for (int colI = 0; colI < boardSize; colI++) {
-                Tile tile = getTileAtPosition(new Position(rowI, colI));
-                tileLocations.add(tile.originalIndex);
-            }
-        }
-        return tileLocations;
-    }*/
-
     public List<Bitmap> getCurrentBitmaps() {
         List<Bitmap> currentBitmaps = new ArrayList<>();
         for (int rowI = 0; rowI < boardSize; rowI++) {
@@ -542,6 +506,8 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
         void callBack();
     }
 
+
+
     public class Movement {
 
         public Rect finalRect, originalRect;
@@ -559,9 +525,7 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
             this.originalRect = rectForPosition(tile.position);
         }
 
-        /**
-         * @return current position of the tile
-         */
+
         public float currentPosition() {
             if (direction == BoardView.Direction.X) {
                 return tile.getX();
@@ -571,10 +535,7 @@ public class BoardView extends RelativeLayout implements OnTouchListener {
             return 0;
         }
 
-        /**
-         * @return original position of the tile. It is used in movement to
-         *         original position.
-         */
+
         public float originalPosition() {
             if (direction == BoardView.Direction.X) {
                 return originalRect.left;

@@ -34,8 +34,8 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
         ImageButton image1Btn = (ImageButton)image_view.findViewById(R.id.image1);
         ImageButton image2Btn = (ImageButton)image_view.findViewById(R.id.image2);
         ImageButton image3Btn = (ImageButton)image_view.findViewById(R.id.image3);
-        //TODO Add other button listeners
         Button galleryBtn = (Button)image_view.findViewById(R.id.gallery_button);
+
         image1Btn.setOnClickListener(this);
         image2Btn.setOnClickListener(this);
         image3Btn.setOnClickListener(this);
@@ -101,7 +101,6 @@ public class ImageSelectFragment extends Fragment implements View.OnClickListene
                     e.printStackTrace();
                 }
 
-                //TODO Run after picture selected
                 Intent intent = new Intent(getActivity(), BoardActivity.class);
                 intent.putExtra(EXTRA_IMAGE, imagePath);
                 intent.putExtra(GRID_SIZE, sizeSelection);

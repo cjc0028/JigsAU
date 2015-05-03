@@ -34,9 +34,4 @@ public class Position {
     public boolean isBelow(Position position) {
         return sharesAxisWith(position) && (row > position.row);
     }
-
-    /*@Override
-    public String toString() {
-        return "[R: "+row+" C:"+column+"]";
-    }*/
 }

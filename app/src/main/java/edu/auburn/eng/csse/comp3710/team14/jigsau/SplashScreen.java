@@ -8,7 +8,6 @@ import android.os.Handler;
 
 public class SplashScreen extends Activity {
     
-    //Splash Screen Timer
     private static int SPLASH_TIME_OUT = 5000;
     private MediaPlayer mediaPlayer;
 
@@ -21,14 +20,11 @@ public class SplashScreen extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                // This method will be executed once the timer is over
-                // Start your main app activity
                 Intent i = new Intent(SplashScreen.this, MainActivity.class);
                 startActivity(i);
 
                 mediaPlayer.start();
 
-                //close the activity
                 finish();
                 overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
             }
